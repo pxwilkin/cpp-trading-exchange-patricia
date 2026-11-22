@@ -9,28 +9,23 @@ class MemPool {
 private:
     std::vector<T> object;
     std::vector<bool> is_free;
-    int free_head;
 
     public:
-    explicit MemPool(std::size_t num_elems) : object(num_elems), is_free(num_elems, true), free_head(0) {
+    explicit MemPool(std::size_t num_elems) : object(num_elems), is_free(num_elems, true) {
         
         if (num_elems == 0) {
             throw std::invalid_argument("MemPool size must be greater than zero");
         }
-
-        std::vector<T> slot = new std::vector<T>() 
-
     }
 
-    hi 
     
     template<typename... Args>
     T* allocate(Args &&... args) noexcept {
-        for (size_t i; i < is_free.size(); i++) {
+        for (size_t i = 0; i < is_free.size(); i++) {
             if(is_free[i]) {
-                objects[i] = T(std::forward<args)
+                object[i] = T(std::forward<Args>(args)...);
                 is_free[i] = false;
-                return &objects[i];
+                return &object[i];
             }
         }
 
@@ -38,15 +33,20 @@ private:
     }
 
 
-    void deallocate(const T *elem) noexcept {
-        // implementation
+    void deallocate(const T* elem) noexcept {
+        for (size_t i = 0; i < object.size(); i++) {
+            if (&object[i] == elem) {
+                is_free[i] = true;
+                return;
+            }
+        }
     }
 
     MemPool() = delete("a MemPool owns its backing storage and free list");
     MemPool(const MemPool &) = delete("a MemPool owns its backing storage and free list");
     MemPool(const MemPool &&) = delete("a MemPool owns its backing storage and free list");
-    MemPool &operator =(const Mempool &) = delete("a MemPool owns its backing storage and free list");
-    MemPool &operator =(const Mempool &&) = delete("a MemPool owns its backing storage and free list");
+    MemPool &operator =(const MemPool &) = delete("a MemPool owns its backing storage and free list");
+    MemPool &operator =(const MemPool &&) = delete("a MemPool owns its backing storage and free list");
 
 };
 
