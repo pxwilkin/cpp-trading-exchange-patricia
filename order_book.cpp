@@ -6,6 +6,27 @@
 OrderBook::OrderBook(const std::string& ticker, MemPool<Order>& memPool)
     : ticker(ticker), memPool(memPool) {}
 
+Order* OrderBook::getBestBid() {
+    cleanBids();
+
+    if (bids.empty()) {
+        return nullptr;
+    }
+    return bids.top();
+}
+    
+Order* OrderBook::getBestAsk() {
+    cleanAsks();
+
+    if (asks.empty()) {
+        return nullptr;
+    }
+
+    return asks.top();
+
+}
+
+
 void OrderBook::add(const Order& order) {
     if (order.getTicker() != ticker) {
         return;
@@ -37,6 +58,21 @@ void OrderBook::cancel(int orderID) {
     it->second->cancel();
     ordersByID.erase(it);
 }
+
+void OrderBook::update(int orderID, int quantityFilled) {
+    auto it = ordersByID.find(orderID);
+
+    if (it == ordersByID.end()) {
+        throw std::invalid_argument("Order ID not found");
+    }
+
+    Order* order = it->second;
+    order->setSize(order->getSize() - quantityFilled);
+    if (order->getSize() == 0) {
+        cancel(orderID);
+    } 
+}
+
 
 std::string OrderBook::toString() const {
     std::ostringstream oss;

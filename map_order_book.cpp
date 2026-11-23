@@ -4,6 +4,22 @@
 MapOrderBook::MapOrderBook(const std::string& ticker, MemPool<Order>& memPool) 
     : ticker(ticker), memPool(memPool) {}
 
+Order* MapOrderBook::getBestBid() {
+    if (buyOrders.empty()) {
+        return nullptr;
+    }
+
+    return buyOrders.rbegin()->second.orders.front();
+}
+
+Order* MapOrderBook::getBestAsk() {
+    if (sellOrders.empty()) {
+        return nullptr;
+    }
+
+    return sellOrders.begin()->second.orders.front();
+}
+
 void MapOrderBook::add(const Order& order) {
     if (order.getTicker() != ticker) {
         throw std::invalid_argument("Order ticker does not match order book");

@@ -163,6 +163,131 @@ static void BM_Map_Cancel(benchmark::State& state) {
     state.SetItemsProcessed(state.iterations() * n);
 }
 
+// Priority Queue: Best Bid
+static void BM_PriorityQueue_GetBestBid(benchmark::State& state) {
+    int n = state.range(0);
+
+    MemPool<Order> pool(n);
+    OrderBook book("AAPL", pool);
+
+    std::vector<Order> orders = generateOrders(n);
+
+    for (const Order& order : orders) {
+        book.add(order);
+    }
+
+    for (auto _ : state) {
+        Order* bestBid = book.getBestBid();
+        benchmark::DoNotOptimize(bestBid);
+    }
+
+    state.SetItemsProcessed(state.iterations());
+}
+
+// Priority Queue: Best Ask
+static void BM_PriorityQueue_GetBestAsk(benchmark::State& state) {
+    int n = state.range(0);
+
+    MemPool<Order> pool(n);
+    OrderBook book("AAPL", pool);
+
+    std::vector<Order> orders = generateOrders(n);
+
+    for (const Order& order : orders) {
+        book.add(order);
+    }
+
+    for (auto _ : state) {
+        Order* bestAsk = book.getBestAsk();
+        benchmark::DoNotOptimize(bestAsk);
+    }
+
+    state.SetItemsProcessed(state.iterations());
+}
+
+// Tick Order Book: Best Bid
+static void BM_Tick_GetBestBid(benchmark::State& state) {
+    int n = state.range(0);
+
+    MemPool<Order> pool(n);
+    TickOrderBook book("AAPL", pool, 10000, 100.0);
+
+    std::vector<Order> orders = generateOrders(n);
+
+    for (const Order& order : orders) {
+        book.add(order);
+    }
+
+    for (auto _ : state) {
+        Order* bestBid = book.getBestBid();
+        benchmark::DoNotOptimize(bestBid);
+    }
+
+    state.SetItemsProcessed(state.iterations());
+}
+
+// Tick Order Book: Best Ask
+static void BM_Tick_GetBestAsk(benchmark::State& state) {
+    int n = state.range(0);
+
+    MemPool<Order> pool(n);
+    TickOrderBook book("AAPL", pool, 10000, 100.0);
+
+    std::vector<Order> orders = generateOrders(n);
+
+    for (const Order& order : orders) {
+        book.add(order);
+    }
+
+    for (auto _ : state) {
+        Order* bestAsk = book.getBestAsk();
+        benchmark::DoNotOptimize(bestAsk);
+    }
+
+    state.SetItemsProcessed(state.iterations());
+}
+
+// Map Order Book: Best Bid
+static void BM_Map_GetBestBid(benchmark::State& state) {
+    int n = state.range(0);
+
+    MemPool<Order> pool(n);
+    MapOrderBook book("AAPL", pool);
+
+    std::vector<Order> orders = generateOrders(n);
+
+    for (const Order& order : orders) {
+        book.add(order);
+    }
+
+    for (auto _ : state) {
+        Order* bestBid = book.getBestBid();
+        benchmark::DoNotOptimize(bestBid);
+    }
+
+    state.SetItemsProcessed(state.iterations());
+}
+
+// Map Order Book: Best Ask
+static void BM_Map_GetBestAsk(benchmark::State& state) {
+    int n = state.range(0);
+
+    MemPool<Order> pool(n);
+    MapOrderBook book("AAPL", pool);
+
+    std::vector<Order> orders = generateOrders(n);
+
+    for (const Order& order : orders) {
+        book.add(order);
+    }
+
+    for (auto _ : state) {
+        Order* bestAsk = book.getBestAsk();
+        benchmark::DoNotOptimize(bestAsk);
+    }
+
+    state.SetItemsProcessed(state.iterations());
+}
 
 // REGISTER BENCHMARKS
 
@@ -174,5 +299,13 @@ BENCHMARK(BM_PriorityQueue_Cancel)->Arg(100)->Arg(1000)->Arg(10000)->Arg(100000)
 BENCHMARK(BM_Tick_Cancel)->Arg(100)->Arg(1000)->Arg(10000)->Arg(100000);
 BENCHMARK(BM_Map_Cancel)->Arg(100)->Arg(1000)->Arg(10000)->Arg(100000);
 
+BENCHMARK(BM_PriorityQueue_GetBestBid)->Arg(100)->Arg(1000)->Arg(10000)->Arg(100000);
+BENCHMARK(BM_PriorityQueue_GetBestAsk)->Arg(100)->Arg(1000)->Arg(10000)->Arg(100000);
+
+BENCHMARK(BM_Tick_GetBestBid)->Arg(100)->Arg(1000)->Arg(10000)->Arg(100000);
+BENCHMARK(BM_Tick_GetBestAsk)->Arg(100)->Arg(1000)->Arg(10000)->Arg(100000);
+
+BENCHMARK(BM_Map_GetBestBid)->Arg(100)->Arg(1000)->Arg(10000)->Arg(100000);
+BENCHMARK(BM_Map_GetBestAsk)->Arg(100)->Arg(1000)->Arg(10000)->Arg(100000);
 
 BENCHMARK_MAIN();

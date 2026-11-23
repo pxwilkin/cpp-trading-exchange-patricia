@@ -31,6 +31,11 @@ private:
 public:
     TickOrderBook(const std::string& ticker, MemPool<Order>& memPool, int numTicks, double basePrice);
 
+    // getters
+    Order* getBestBid();
+    Order* getBestAsk();
+
+    // other functions
     void add(const Order& order);
 
     void cancel(int orderID);

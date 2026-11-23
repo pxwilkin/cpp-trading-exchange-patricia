@@ -9,6 +9,30 @@ TickOrderBook::TickOrderBook(const std::string& ticker, MemPool<Order>& memPool,
     : ticker(ticker), memPool(memPool), numTicks(numTicks), basePrice(basePrice), 
     buyLevels(numTicks), sellLevels(numTicks), bestBidIndex(-1), bestAskIndex(numTicks) {}
 
+Order* TickOrderBook::getBestBid() {
+    if (bestBidIndex == -1) {
+        return nullptr;
+    }
+
+    if (buyLevels[bestBidIndex].orders.empty()) {
+        return nullptr;
+    }
+
+    return buyLevels[bestBidIndex].orders.front();
+}
+
+Order* TickOrderBook::getBestAsk() {
+    if (bestAskIndex == -1) {
+        return nullptr;
+    }
+
+    if (sellLevels[bestAskIndex].orders.empty()) {
+        return nullptr;
+    }
+
+    return sellLevels[bestAskIndex].orders.front();
+}
+
 void TickOrderBook::add(const Order& order) {
     // Check ticker
     if (order.getTicker() != ticker) {

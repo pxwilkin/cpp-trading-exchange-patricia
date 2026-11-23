@@ -22,15 +22,27 @@ private:
 public: 
     OrderBook(const std::string& ticker, MemPool<Order>& memPool);
 
+    // getters
+    Order* getBestBid();
+    
+    Order* getBestAsk();
+
+    // other functions
     void add(const Order& order);
 
     void cancel(int orderID);
 
+    void update(int orderID, int quantityFilled);
+
     std::string toString() const;
 
+
+    // helper functions to remove lazy deleted orders 
     void cleanBids();
 
     void cleanAsks();
+
+    
 };
 
 #endif

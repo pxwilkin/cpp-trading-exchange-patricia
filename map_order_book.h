@@ -22,6 +22,11 @@ private:
 public:
     MapOrderBook(const std::string& ticker, MemPool<Order>& memPool);
 
+    // getters
+    Order* getBestBid();
+    Order* getBestAsk();
+
+    // other functions
     void add(const Order& order);
 
     void cancel(int orderID);

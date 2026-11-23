@@ -1,0 +1,59 @@
+2026-11-23T17:08:00-05:00
+Running /home/patriciawilkin/.cache/bazel/_bazel_patriciawilkin/3d80a9d6d660453ab6c90cfcd8de7f5f/execroot/_main/bazel-out/k8-opt/bin/containers_benchmark
+Run on (14 X 2688 MHz CPU s)
+CPU Caches:
+  L1 Data 48 KiB (x7)
+  L1 Instruction 64 KiB (x7)
+  L2 Unified 2048 KiB (x7)
+  L3 Unified 12288 KiB (x1)
+Load Average: 0.09, 0.49, 0.58
+***WARNING*** Library was built as DEBUG. Timings may be affected.
+name,iterations,real_time,cpu_time,time_unit,bytes_per_second,items_per_second,label,error_occurred,error_message
+"BM_PriorityQueue_Add/100",78919,9024.34,9023.71,ns,,1.10819e+07,,,
+"BM_PriorityQueue_Add/1000",7212,101793,101793,ns,,9.82386e+06,,,
+"BM_PriorityQueue_Add/10000",656,1.11823e+06,1.11822e+06,ns,,8.94281e+06,,,
+"BM_PriorityQueue_Add/100000",52,1.33083e+07,1.3308e+07,ns,,7.5143e+06,,,
+"BM_Tick_Add/100",11731,49516.1,49514.9,ns,,2.01959e+06,,,
+"BM_Tick_Add/1000",4271,132221,132222,ns,,7.56304e+06,,,
+"BM_Tick_Add/10000",609,977546,977444,ns,,1.02308e+07,,,
+"BM_Tick_Add/100000",59,1.12249e+07,1.12246e+07,ns,,8.90902e+06,,,
+"BM_Map_Add/100",30472,20007.7,20007.2,ns,,4.99819e+06,,,
+"BM_Map_Add/1000",1862,369734,369725,ns,,2.70471e+06,,,
+"BM_Map_Add/10000",150,4.27608e+06,4.27597e+06,ns,,2.33865e+06,,,
+"BM_Map_Add/100000",15,4.78537e+07,4.78501e+07,ns,,2.08986e+06,,,
+"BM_PriorityQueue_Cancel/100",67058,10643,10655.9,ns,,9.38446e+06,,,
+"BM_PriorityQueue_Cancel/1000",6413,99956.2,99915.9,ns,,1.00084e+07,,,
+"BM_PriorityQueue_Cancel/10000",589,1.021e+06,1.02138e+06,ns,,9.79064e+06,,,
+"BM_PriorityQueue_Cancel/100000",49,1.40967e+07,1.41045e+07,ns,,7.08993e+06,,,
+"BM_Tick_Cancel/100",1236,584226,584473,ns,,171094,,,
+"BM_Tick_Cancel/1000",71,9.19975e+06,9.20082e+06,ns,,108686,,,
+"BM_Tick_Cancel/10000",3,2.28959e+08,2.28957e+08,ns,,43676.3,,,
+"BM_Tick_Cancel/100000",1,3.3202e+10,3.32011e+10,ns,,3011.94,,,
+"BM_Map_Cancel/100",19758,37307.7,37343.6,ns,,2.67783e+06,,,
+"BM_Map_Cancel/1000",214,3.0298e+06,3.0307e+06,ns,,329957,,,
+"BM_Map_Cancel/10000",2,3.02764e+08,3.02767e+08,ns,,33028.7,,,
+"BM_Map_Cancel/100000",1,6.63714e+10,6.63684e+10,ns,,1506.74,,,
+"BM_PriorityQueue_GetBestBid/100",172256980,4.00028,4.00004,ns,,2.49998e+08,,,
+"BM_PriorityQueue_GetBestBid/1000",178861074,4.09046,4.09049,ns,,2.4447e+08,,,
+"BM_PriorityQueue_GetBestBid/10000",185812129,4.03438,4.0344,ns,,2.47869e+08,,,
+"BM_PriorityQueue_GetBestBid/100000",181273420,3.8689,3.86888,ns,,2.58472e+08,,,
+"BM_PriorityQueue_GetBestAsk/100",170324424,4.07291,4.07271,ns,,2.45537e+08,,,
+"BM_PriorityQueue_GetBestAsk/1000",168076831,4.10995,4.08468,ns,,2.44817e+08,,,
+"BM_PriorityQueue_GetBestAsk/10000",163334678,3.93522,3.93526,ns,,2.54113e+08,,,
+"BM_PriorityQueue_GetBestAsk/100000",167287422,4.06501,4.06501,ns,,2.46002e+08,,,
+"BM_Tick_GetBestBid/100",508506589,1.64194,1.64195,ns,,6.09032e+08,,,
+"BM_Tick_GetBestBid/1000",502215488,1.39888,1.39885,ns,,7.14875e+08,,,
+"BM_Tick_GetBestBid/10000",568742713,1.28812,1.28812,ns,,7.76326e+08,,,
+"BM_Tick_GetBestBid/100000",567971595,1.26559,1.26557,ns,,7.90159e+08,,,
+"BM_Tick_GetBestAsk/100",558552233,1.21453,1.21454,ns,,8.23359e+08,,,
+"BM_Tick_GetBestAsk/1000",553326003,1.23648,1.23649,ns,,8.08742e+08,,,
+"BM_Tick_GetBestAsk/10000",500175061,1.21556,1.21433,ns,,8.23499e+08,,,
+"BM_Tick_GetBestAsk/100000",393085072,1.34644,1.34641,ns,,7.42713e+08,,,
+"BM_Map_GetBestBid/100",292095560,2.45212,2.45213,ns,,4.07809e+08,,,
+"BM_Map_GetBestBid/1000",277101189,2.45347,2.45344,ns,,4.07591e+08,,,
+"BM_Map_GetBestBid/10000",303208028,2.36639,2.3664,ns,,4.22583e+08,,,
+"BM_Map_GetBestBid/100000",311235329,2.3127,2.31264,ns,,4.32406e+08,,,
+"BM_Map_GetBestAsk/100",638972386,1.06961,1.0696,ns,,9.34932e+08,,,
+"BM_Map_GetBestAsk/1000",580675774,1.10885,1.10885,ns,,9.01834e+08,,,
+"BM_Map_GetBestAsk/10000",584284256,1.07183,1.05989,ns,,9.43494e+08,,,
+"BM_Map_GetBestAsk/100000",686489879,1.15779,1.15777,ns,,8.6373e+08,,,

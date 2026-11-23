@@ -11,8 +11,8 @@ class MemPool {
 private:
     std::vector<T> object;
     std::vector<bool> is_free;
-    int nextFree = 0;
-
+    std::size_t nextFree = 0;
+    
     public:
     explicit MemPool(std::size_t num_elems) : object(num_elems), is_free(num_elems, true) {
         
@@ -35,7 +35,7 @@ private:
 
 
         // Allocate object
-        int index = nextFree;
+        std::size_t index = nextFree;
         object[index] = T(std::forward<Args>(args)...);
         is_free[index] = false;
 
@@ -51,13 +51,15 @@ private:
 
         int index = elem - &object[0];
 
-        if (index >= object.size() || is_free[index]) return;
+        if (index < 0 || static_cast<std::size_t>(index) >= object.size() 
+        || is_free[index]) {
+            return;
+        }
 
         is_free[index] = true;
 
-        if (index < nextFree) {
-            nextFree = index;
-        }
+        nextFree = std::min(nextFree, static_cast<std::size_t>(index));
+
     }
  
     MemPool() = delete("a MemPool owns its backing storage and free list");

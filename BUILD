@@ -7,19 +7,24 @@ cc_library(
     srcs = ["order_book.cpp",
             "tick_order_book.cpp",
             "map_order_book.cpp",
-    ],
+            "exchange_main.cpp",
+        ],
     hdrs = [
         "order_book.h",
         "tick_order_book.h",
         "map_order_book.h",
         "order.h",
         "mem_pool.h",
+        "exchange_main.h",
+
     ],
 )
 
 cc_test(
     name = "order_book_test",
-    srcs = ["order_book_test.cpp"],
+    srcs = ["order_book_test.cpp",        
+    "exchange_test.cpp",
+    ],
     deps = [
         ":order_book",
         "@googletest//:gtest_main",
