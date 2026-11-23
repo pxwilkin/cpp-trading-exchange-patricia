@@ -11,6 +11,7 @@ class MemPool {
 private:
     std::vector<T> object;
     std::vector<bool> is_free;
+    int nextFree = 0;
 
     public:
     explicit MemPool(std::size_t num_elems) : object(num_elems), is_free(num_elems, true) {
@@ -23,24 +24,39 @@ private:
     
     template<typename... Args>
     T* allocate(Args &&... args) noexcept {
-        for (size_t i = 0; i < is_free.size(); i++) {
-            if(is_free[i]) {
-                object[i] = T(std::forward<Args>(args)...);
-                is_free[i] = false;
-                return &object[i];
-            }
+        // Find next available slot
+        while (nextFree < is_free.size() && !is_free[nextFree]) {
+            nextFree++;
+        }
+        
+        if (nextFree == is_free.size()) {
+            return nullptr;
         }
 
-        return nullptr;
+
+        // Allocate object
+        int index = nextFree;
+        object[index] = T(std::forward<Args>(args)...);
+        is_free[index] = false;
+
+        nextFree++;
+
+        return &object[index];
+
     }
 
 
     void deallocate(const T* elem) noexcept {
-        for (size_t i = 0; i < object.size(); i++) {
-            if (&object[i] == elem) {
-                is_free[i] = true;
-                return;
-            }
+        if (elem == nullptr) return;
+
+        int index = elem - &object[0];
+
+        if (index >= object.size() || is_free[index]) return;
+
+        is_free[index] = true;
+
+        if (index < nextFree) {
+            nextFree = index;
         }
     }
  

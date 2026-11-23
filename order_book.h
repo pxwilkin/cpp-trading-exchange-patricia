@@ -4,6 +4,7 @@
 #include <string>
 #include <queue>
 #include <vector>
+#include <unordered_map>
 #include "order.h"
 #include "mem_pool.h"
 
@@ -15,6 +16,9 @@ private:
     std::priority_queue<Order*, std::vector<Order*>, Order::ForBids> bids;
     std::priority_queue<Order*, std::vector<Order*>, Order::ForAsks> asks;
 
+    // unordered map for ease of locating orders
+    std::unordered_map<int, Order*> ordersByID;
+
 public: 
     OrderBook(const std::string& ticker, MemPool<Order>& memPool);
 
@@ -24,6 +28,9 @@ public:
 
     std::string toString() const;
 
+    void cleanBids();
+
+    void cleanAsks();
 };
 
 #endif

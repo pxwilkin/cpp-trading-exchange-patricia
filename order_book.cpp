@@ -11,20 +11,14 @@ void OrderBook::add(const Order& order) {
         return;
     }
     
-    Order* newOrder = memPool.allocate(
-        order.getTicker(),
-        order.getSize(),
-        order.getSide(),
-        order.getType(),
-        order.getPrice(),
-        order.getClientID(),
-        order.getOrderID()
-    );
+    Order* newOrder = memPool.allocate(order);
 
     if (newOrder == nullptr) {
-        return;
+        throw std::runtime_error("Memory pool is full");
     }
 
+    ordersByID[newOrder->getOrderID()] = newOrder;
+    
     if (order.getSide() == Side::BUY) {
         bids.push(newOrder);
     }
@@ -34,44 +28,14 @@ void OrderBook::add(const Order& order) {
 }
 
 void OrderBook::cancel(int orderID) {
-    std::priority_queue<Order*, std::vector<Order*>, Order::ForBids> tempBids;
-    std::priority_queue<Order*, std::vector<Order*>, Order::ForAsks> tempAsks;
+    auto it = ordersByID.find(orderID);
 
-    Order* canceledOrder = nullptr;
-
-    // Search through buy orders
-    while (!bids.empty()) {
-        Order* order = bids.top();
-        bids.pop();
-
-        if (order->getOrderID() != orderID) {
-            tempBids.push(order);
-        }
-        else {
-            canceledOrder = order;
-        }
+    if (it == ordersByID.end()) {
+        throw std::invalid_argument("Order ID not found");
     }
 
-    // Search through sell orders
-    while (!asks.empty()) {
-        Order* order = asks.top();
-        asks.pop();
-
-        if (order->getOrderID() != orderID) {
-            tempAsks.push(order);
-        }
-        else {
-            canceledOrder = order;
-        }
-    }
-
-    bids = tempBids;
-    asks = tempAsks;
-    
-    if (canceledOrder != nullptr) {
-        memPool.deallocate(canceledOrder);
-    }
-
+    it->second->cancel();
+    ordersByID.erase(it);
 }
 
 std::string OrderBook::toString() const {
@@ -99,4 +63,20 @@ std::string OrderBook::toString() const {
 
     return oss.str();
 
+}
+
+void OrderBook::cleanBids() {
+    while (!bids.empty() && bids.top()->isCancelled()) {
+        Order* cancelledOrder = bids.top();
+        bids.pop();
+        memPool.deallocate(cancelledOrder);
+    }
+}
+
+void OrderBook::cleanAsks() {
+    while (!asks.empty() && asks.top()->isCancelled()) {
+        Order* cancelledOrder = asks.top();
+        asks.pop();
+        memPool.deallocate(cancelledOrder);
+    }
 }

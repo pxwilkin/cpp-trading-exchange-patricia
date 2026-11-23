@@ -15,7 +15,7 @@ enum class OrderType {
 };
 
 class Order {
-    private:
+private:
     std::string ticker;
     int size;
     Side side;
@@ -23,8 +23,9 @@ class Order {
     double price;
     int client_id;
     int order_id;
+    bool cancelled = false;
 
-    public:
+public:
     Order() = default;
     
     Order(const std::string& ticker, int size, Side side, 
@@ -40,6 +41,7 @@ class Order {
     double getPrice() const { return price; }
     int getClientID() const { return client_id; }
     int getOrderID() const { return order_id; }
+    bool isCancelled() const { return cancelled; }
 
     // setter
     void setSize(int newSize) {
@@ -78,7 +80,9 @@ class Order {
         return oss.str();
     }
 
-
+    void cancel() {
+        cancelled = true;
+    }
 
 };
 

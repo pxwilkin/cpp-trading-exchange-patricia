@@ -8,7 +8,7 @@
 #include <vector>
 
 
-struct PriceLevel {
+struct TickPriceLevel {
     int totalQuantity = 0;
     std::list<Order*> orders;
 };
@@ -22,8 +22,8 @@ private:
     double tickSize = 0.01;
     double basePrice;
 
-    std::vector<PriceLevel> buyLevels;
-    std::vector<PriceLevel> sellLevels;
+    std::vector<TickPriceLevel> buyLevels;
+    std::vector<TickPriceLevel> sellLevels;
 
     int bestBidIndex;
     int bestAskIndex;

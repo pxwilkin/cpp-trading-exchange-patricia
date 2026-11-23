@@ -6,7 +6,7 @@
 #include <list>
 
 
-struct PriceLevel {
+struct MapPriceLevel {
     int totalQuantity = 0;
     std::list<Order*> orders;
 };
@@ -16,8 +16,8 @@ private:
     std::string ticker; 
     MemPool<Order>& memPool;
     
-    std::map<double, PriceLevel> buyOrders;
-    std::map<double, PriceLevel> sellOrders;
+    std::map<double, MapPriceLevel> buyOrders;
+    std::map<double, MapPriceLevel> sellOrders;
 
 public:
     MapOrderBook(const std::string& ticker, MemPool<Order>& memPool);
