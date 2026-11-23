@@ -5,16 +5,18 @@
 #include <queue>
 #include <vector>
 #include "order.h"
+#include "mem_pool.h"
 
 class OrderBook {
 private:
     std::string ticker; 
-
-    std::priority_queue<Order, std::vector<Order>, Order::ForBids> bids;
-    std::priority_queue<Order, std::vector<Order>, Order::ForAsks> asks;
+    MemPool<Order>& memPool;
+    
+    std::priority_queue<Order*, std::vector<Order*>, Order::ForBids> bids;
+    std::priority_queue<Order*, std::vector<Order*>, Order::ForAsks> asks;
 
 public: 
-    OrderBook(const std::string& ticker);
+    OrderBook(const std::string& ticker, MemPool<Order>& memPool);
 
     void add(const Order& order);
 

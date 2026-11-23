@@ -25,6 +25,8 @@ class Order {
     int order_id;
 
     public:
+    Order() = default;
+    
     Order(const std::string& ticker, int size, Side side, 
         OrderType type, double price, int client_id, int order_id) 
         : ticker(ticker), size(size), side(side), type(type), 
@@ -45,14 +47,14 @@ class Order {
     }
 
     struct ForBids {
-        bool operator()(const Order& a, const Order& b) const {
-            return a.getPrice() < b.getPrice();
+        bool operator()(const Order* a, const Order* b) const {
+            return a->getPrice() < b->getPrice();
         }
     };
 
     struct ForAsks {
-        bool operator()(const Order& a, const Order& b) const {
-            return a.getPrice() > b.getPrice();
+        bool operator()(const Order* a, const Order* b) const {
+            return a->getPrice() > b->getPrice();
         }
     };
 

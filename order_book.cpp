@@ -3,49 +3,75 @@
 #include <queue>
 #include <sstream>
 
-OrderBook::OrderBook(const std::string& ticker) 
-    : ticker(ticker) {}
-
+OrderBook::OrderBook(const std::string& ticker, MemPool<Order>& memPool)
+    : ticker(ticker), memPool(memPool) {}
 
 void OrderBook::add(const Order& order) {
     if (order.getTicker() != ticker) {
         return;
     }
+    
+    Order* newOrder = memPool.allocate(
+        order.getTicker(),
+        order.getSize(),
+        order.getSide(),
+        order.getType(),
+        order.getPrice(),
+        order.getClientID(),
+        order.getOrderID()
+    );
+
+    if (newOrder == nullptr) {
+        return;
+    }
 
     if (order.getSide() == Side::BUY) {
-        bids.push(order);
+        bids.push(newOrder);
     }
     else {
-        asks.push(order);
+        asks.push(newOrder);
     }
 }
 
 void OrderBook::cancel(int orderID) {
-    std::priority_queue<Order, std::vector<Order>, Order::ForBids> tempBids;
-    std::priority_queue<Order, std::vector<Order>, Order::ForAsks> tempAsks;
+    std::priority_queue<Order*, std::vector<Order*>, Order::ForBids> tempBids;
+    std::priority_queue<Order*, std::vector<Order*>, Order::ForAsks> tempAsks;
+
+    Order* canceledOrder = nullptr;
 
     // Search through buy orders
     while (!bids.empty()) {
-        Order order = bids.top();
+        Order* order = bids.top();
         bids.pop();
 
-        if (order.getOrderID() != orderID) {
+        if (order->getOrderID() != orderID) {
             tempBids.push(order);
+        }
+        else {
+            canceledOrder = order;
         }
     }
 
     // Search through sell orders
     while (!asks.empty()) {
-        Order order = asks.top();
+        Order* order = asks.top();
         asks.pop();
 
-        if (order.getOrderID() != orderID) {
+        if (order->getOrderID() != orderID) {
             tempAsks.push(order);
+        }
+        else {
+            canceledOrder = order;
         }
     }
 
     bids = tempBids;
     asks = tempAsks;
+    
+    if (canceledOrder != nullptr) {
+        memPool.deallocate(canceledOrder);
+    }
+
 }
 
 std::string OrderBook::toString() const {
@@ -58,7 +84,7 @@ std::string OrderBook::toString() const {
 
     auto tempBids = bids;
     while (!tempBids.empty()) {
-        oss << tempBids.top().toString() << "\n";
+        oss << "  " << tempBids.top()->toString() << "\n";
         tempBids.pop();
     }
 
@@ -67,10 +93,10 @@ std::string OrderBook::toString() const {
 
     auto tempAsks = asks;
     while (!tempAsks.empty()) {
-        oss << tempAsks.top().toString() << "\n";
+        oss << "  " << tempAsks.top()->toString() << "\n";
         tempAsks.pop();
     }
 
     return oss.str();
-    
+
 }
